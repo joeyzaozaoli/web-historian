@@ -17,10 +17,26 @@ exports.handleRequest = function (req, res) {
   }
 
   if (req.method === 'POST') {
-    if (req.url === '/') {
-      utils.gatherData(req, function(dataStream) {
-        var url = dataStream.split('=')[1];
-        console.log(url);
+    if (req.url === '/' || req.url === '/loading.html') {
+      utils.gatherData(req, function(url) {
+        archive.isUrlInList(url, function(listed) {
+          if (!listed) {
+            archive.addUrlToList(url, function() {
+              // redirect to loading.html
+              utils.redirect(res, '/loading.html');
+            });
+          } else {
+            archive.isUrlArchived(url, function(archived) {
+              if (!archived) {
+                // redirect to loading.html
+                utils.redirect(res, '/loading.html');
+              } else {
+                // redirect to www.url.com
+                utils.redirect(res, '/' + url);
+              }
+            });
+          }
+        });
       });
     }
   }

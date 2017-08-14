@@ -31,3 +31,8 @@ exports.gatherData = function(req, callback) {
     callback(url);
   });
 };
+
+exports.redirect = function(res, urlPath) {
+  res.writeHead(302, {'Location': urlPath});
+  res.end();
+};
