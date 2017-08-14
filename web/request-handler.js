@@ -1,7 +1,13 @@
 var path = require('path');
 var archive = require('../helpers/archive-helpers');
-// require more modules/folders here!
+var utils = require('./http-helpers');
 
 exports.handleRequest = function (req, res) {
-  res.end(archive.paths.list);
+
+  if (req.method === 'GET') {
+    if (req.url === '/') {
+      utils.serveAssets(res, __dirname + '/public/index.html');
+    }
+  }
+
 };
