@@ -51,6 +51,11 @@ exports.addUrlToList = function(url, callback) {
 };
 
 exports.isUrlArchived = function(url, callback) {
+  if (fs.existsSync(exports.paths.archivedSites + '/' + url)) {
+    callback(true);
+  } else {
+    callback(false);
+  }
 };
 
 exports.downloadUrls = function(urls) {
