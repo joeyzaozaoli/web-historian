@@ -21,6 +21,12 @@ exports.serveAssets = function(res, asset, callback) {
   });
 };
 
-
-
-// As you progress, keep thinking about what helper functions you can put here!
+exports.gatherData = function(req, callback) {
+  var dataStream = '';
+  req.on('data', function(chunk) {
+    dataStream += chunk.toString();
+  });
+  req.on('end', function() {
+    callback(dataStream);
+  });
+};

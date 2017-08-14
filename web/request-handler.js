@@ -16,4 +16,13 @@ exports.handleRequest = function (req, res) {
     }
   }
 
+  if (req.method === 'POST') {
+    if (req.url === '/') {
+      utils.gatherData(req, function(dataStream) {
+        var url = dataStream.split('=')[1];
+        console.log(url);
+      });
+    }
+  }
+
 };
