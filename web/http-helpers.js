@@ -27,6 +27,7 @@ exports.gatherData = function(req, callback) {
     dataStream += chunk.toString();
   });
   req.on('end', function() {
-    callback(dataStream);
+    var url = dataStream.split('=')[1];
+    callback(url);
   });
 };
