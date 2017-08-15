@@ -13,7 +13,8 @@ exports.headers = {
 exports.serveAssets = function(res, asset, callback) {
   fs.readFile(asset, function(error, data) {
     if (error) {
-      callback();
+      res.writeHead(404, exports.headers);
+      res.end();
     } else {
       res.writeHead(200, exports.headers);
       res.end(data.toString());
