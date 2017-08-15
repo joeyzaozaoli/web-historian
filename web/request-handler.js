@@ -10,35 +10,30 @@ exports.handleRequest = function (req, res) {
     if (req.url === '/') {
       utils.serveAssets(res, __dirname + '/public/index.html');
     } else {
-      utils.serveAssets(res, __dirname + '/archives/sites' + req.url, function() {
+      utils.serveAssets(res, __dirname + '/../archives/sites' + req.url, function() {
         utils.serveAssets(res, __dirname + '/public/loading.html');
       });
     }
   }
 
   if (req.method === 'POST') {
-    if (req.url === '/' || req.url === '/loading.html') {
-      utils.gatherData(req, function(url) {
-        archive.isUrlInList(url, function(listed) {
-          if (!listed) {
-            archive.addUrlToList(url, function() {
-              // redirect to loading.html
+    utils.gatherData(req, function(url) {
+      archive.isUrlInList(url, function(listed) {
+        if (!listed) {
+          archive.addUrlToList(url, function() {
+            utils.redirect(res, '/loading.html');
+          });
+        } else {
+          archive.isUrlArchived(url, function(archived) {
+            if (!archived) {
               utils.redirect(res, '/loading.html');
-            });
-          } else {
-            archive.isUrlArchived(url, function(archived) {
-              if (!archived) {
-                // redirect to loading.html
-                utils.redirect(res, '/loading.html');
-              } else {
-                // redirect to www.url.com
-                utils.redirect(res, '/' + url);
-              }
-            });
-          }
-        });
+            } else {
+              utils.redirect(res, '/' + url);
+            }
+          });
+        }
       });
-    }
+    });
   }
 
 };

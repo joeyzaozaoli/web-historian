@@ -33,6 +33,6 @@ exports.gatherData = function(req, callback) {
 };
 
 exports.redirect = function(res, urlPath) {
-  res.writeHead(302, {'Location': urlPath});
+  res.writeHead(302, {Location: urlPath});
   res.end();
 };
